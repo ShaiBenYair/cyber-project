@@ -6,6 +6,7 @@ import axios from "axios";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import pg from "pg";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -17,7 +18,7 @@ app.use(urlencoded({ extended: true }));
 app.use(json());
 
 const port = 3000;
-const apiKey = "AIzaSyDQ9YrTnefWtnBc0Tj5m6oisFCcrd86Kp4"; // Replace with your actual API key
+const apiKey = "AIzaSyDQ9YrTnefWtnBc0Tj5m6oisFCcrd86Kp4"; 
 
 app.use(express.static("public")); // Serve static files like HTML, CSS, etc.
 
@@ -63,7 +64,22 @@ app.post("/submit", async (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-    console.log(req.body);
+    const client = new Client({
+        user: 'your_username',
+        host: 'localhost', // Change to your database host
+        database: 'your_database',
+        password: 'your_password',
+        port: 5432, // Default PostgreSQL port
+      });
+      client.connect()
+      .then(() => console.log("Connected to PostgreSQL"))
+      .catch(err => console.error("Connection error", err.stack));
+      client.query('SELECT * FROM users')
+    .then(res => {
+        console.log("Users:", res.rows);
+    })
+    .catch(err => console.error("Query error", err.stack))
+    .finally(() => client.end()); // Close connection after query   
 });
 
 app.listen(port, () => {
