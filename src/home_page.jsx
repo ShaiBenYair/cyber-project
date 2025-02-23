@@ -1,6 +1,6 @@
 import React from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -15,7 +15,16 @@ const HomePage = () => {
                 <img src="/api/placeholder/100/40" alt="Logo" className="h-10" />
               </a>
               <nav className="hidden md:flex gap-6">
-                {["Home", "Features", "Pricing", "FAQs", "About"].map((item) => (
+                {["Home", "My List", "List of all books", "friends", "search books"].map((item) => (
+                item === "search books" ? (
+                  <Link
+                    key={item}
+                    to="/search"
+                    className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    {item}
+                  </Link>
+                ) : (
                   <a
                     key={item}
                     href="#"
@@ -23,20 +32,13 @@ const HomePage = () => {
                   >
                     {item}
                   </a>
-                ))}
+                )
+              ))}
               </nav>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
-                <input
-                  type="search"
-                  placeholder="Search..."
-                  className="pl-8 w-64 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-100"
-                />
-              </div>
-              <button className="hidden md:inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button onClick={() => navigate('/search')} className="hidden md:inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 Login
               </button>
               <button onClick={() => navigate('/signin')} className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" >

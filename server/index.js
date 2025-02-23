@@ -1,6 +1,5 @@
 import pkg from "body-parser";
 const { urlencoded, json } = pkg; // Destructure to access the middleware functions
-
 import express from "express";
 import axios from "axios";
 import { dirname } from "path";
