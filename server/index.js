@@ -65,7 +65,7 @@ app.post("/submit", async (req, res) => {
 
 app.post("/register", (req, res) => {
     const client = new Client({
-        user: 'your_username',
+        user: 'postgres',
         host: 'localhost', // Change to your database host
         database: 'your_database',
         password: 'your_password',

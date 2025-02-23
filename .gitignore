@@ -1,0 +1,18 @@
+# Ignore specific files
+config.env
+*.key
+
+# Ignore directories
+node_modules/
+build/
+.idea/
+
+# Ignore all files with an extension (e.g., .log)
+*.log
+
+# Ignore OS-specific files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Ignore all files in a directory (except the directory itself)
+temp/*
