@@ -7,9 +7,10 @@ const BookSearch = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const fetchBooks = async (page, isNewSearch = false) => {
     setIsLoading(true);
     setError(null);
 
@@ -17,15 +18,28 @@ const BookSearch = () => {
       const response = await fetch("http://localhost:3000/submit", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ searchQuery, searchCategory }),
+        body: new URLSearchParams({
+          searchQuery,
+          searchCategory,
+          page: page.toString()
+        }),
       });
       const data = await response.json();
       setBooks(data.books || []);
+      if (isNewSearch) {
+        setTotalItems(data.totalItems || 0);
+      }
     } catch (err) {
       setError("Failed to load books.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setCurrentPage(0);
+    await fetchBooks(0, true);
   };
 
   return (
@@ -36,46 +50,42 @@ const BookSearch = () => {
           <p>Discover your next favorite read</p>
         </div>
 
-        {/* Flex container to align the search input and dropdown properly */}
         <div className="search-form-container">
           <form onSubmit={handleSubmit} className="search-form">
-          <div className="input-group">
-            {/* Search Input */}
-            <div className="search-input-wrapper">
+            <div className="input-group">
+              <div className="search-input-wrapper">
                 <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-                placeholder="Search for books..."
-                required
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="search-input"
+                  placeholder="Search for books..."
+                  required
                 />
                 <Search className="search-icon" size={20} />
                 {searchQuery && (
-                <button
+                  <button
                     type="button"
                     onClick={() => setSearchQuery("")}
                     className="clear-button"
-                >
-                </button>
+                  >
+                    <X size={16} />
+                  </button>
                 )}
-            </div>
+              </div>
 
-            {/* Dropdown */}
-            <select
+              <select
                 value={searchCategory}
                 onChange={(e) => setSearchCategory(e.target.value)}
                 className="category-select"
-            >
+              >
                 <option value="title">Title</option>
                 <option value="isbn">ISBN</option>
                 <option value="genre">Genre</option>
                 <option value="author">Author</option>
-            </select>
+              </select>
             </div>
 
-
-            {/* Search Button */}
             <button type="submit" disabled={isLoading} className="search-button">
               <Search size={20} />
               {isLoading ? "Searching..." : "Search"}
@@ -95,6 +105,36 @@ const BookSearch = () => {
             books.map((book, index) => <BookCard key={index} book={book} />)
           )}
         </div>
+
+        {totalItems > 0 && (
+          <div className="pagination-controls">
+            <button
+              onClick={() => {
+                const prevPage = currentPage - 1;
+                setCurrentPage(prevPage);
+                fetchBooks(prevPage);
+              }}
+              disabled={currentPage === 0 || isLoading}
+            >
+              Previous
+            </button>
+            
+            <span>
+              Page {currentPage + 1} of {Math.ceil(totalItems / 10)}
+            </span>
+
+            <button
+              onClick={() => {
+                const nextPage = currentPage + 1;
+                setCurrentPage(nextPage);
+                fetchBooks(nextPage);
+              }}
+              disabled={currentPage >= Math.ceil(totalItems / 10) - 1 || isLoading}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -113,7 +153,7 @@ const BookCard = ({ book }) => {
             <span className="font-semibold">Author(s):</span> {book.authors.join(", ")}
           </p>
           <p className="book-metadata">
-            <span className="font-semibold">Genres:</span> {book.categories ? book.categories.join(", ") : "N/A"}
+            <span className="font-semibold">Genres:</span> {book.categories.join(", ")}
           </p>
           <p className="book-description">{book.description}</p>
           <button className="view-details-button">
