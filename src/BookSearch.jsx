@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Search, Book, X } from "lucide-react";
+import { useNavigate, Link } from 'react-router-dom';
 
 const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -141,6 +142,7 @@ const BookSearch = () => {
 };
 
 const BookCard = ({ book }) => {
+  const navigate = useNavigate();
   return (
     <div className="book-card">
       <div className="book-content">
@@ -152,18 +154,15 @@ const BookCard = ({ book }) => {
           <p className="book-metadata">
             <span className="font-semibold">Author(s):</span> {book.authors.join(", ")}
           </p>
-          <p className="book-metadata">
-            <span className="font-semibold">Genres:</span> {book.categories.join(", ")}
-          </p>
-          <p className="book-description">{book.description}</p>
-          <button className="view-details-button">
-            <Book size={20} />
-            View Details
+          <button onClick={() => navigate(`/bookDetails/${book.id}`)} className="view-details-button">
+              <Book size={20} />
+              View Details
           </button>
         </div>
       </div>
     </div>
   );
 };
+
 
 export default BookSearch;
