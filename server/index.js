@@ -13,7 +13,7 @@ app.use(cors());
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const apiKey = "AIzaSyDQ9YrTnefWtnBc0Tj5m6oisFCcrd86Kp4";
 const bookUpdates = new Map(); // Simple in-memory storage for updates
 

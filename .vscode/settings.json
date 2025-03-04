@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f1c91f16-366d-4942-8b66-835ec0d339bc/resourceGroups/Cyber2/providers/Microsoft.Web/sites/Libos",
+    "appService.deploySubpath": "."
+}
