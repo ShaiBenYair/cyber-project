@@ -11,6 +11,7 @@
     "build:css": "tailwindcss build src/styles.css -o public/styles.css"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "lucide-react": "^0.263.1",
     "pg": "^8.13.3",

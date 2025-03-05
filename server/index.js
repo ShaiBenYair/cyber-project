@@ -5,6 +5,7 @@ import axios from "axios";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import pg from "pg";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -111,6 +112,10 @@ app.get('/book/:id', async (req, res) => {
       res.status(500).json({ error: "Failed to save update" });
     }
   });
+
+app.post('/register', ()=>{
+    
+})
     
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
