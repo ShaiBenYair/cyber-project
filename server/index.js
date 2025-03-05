@@ -1,19 +1,18 @@
-import pkg from "body-parser";
-const { urlencoded, json } = pkg;
-import express from "express";
-import axios from "axios";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import cors from "cors";
+const bodyParser = require("body-parser");
+const express = require("express");
+const axios = require("axios");
+const path = require("path");
+const cors = require("cors");
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// Destructure `body-parser` methods
+const { urlencoded, json } = bodyParser;
 
 const app = express();
 app.use(cors());
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
-const port = 3000;
+const port = process.env.PORT || 3001;
 const apiKey = "AIzaSyDQ9YrTnefWtnBc0Tj5m6oisFCcrd86Kp4";
 const bookUpdates = new Map(); // Simple in-memory storage for updates
 
