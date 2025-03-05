@@ -5,7 +5,9 @@ config.env
 # Ignore directories
 node_modules/
 build/
+dist/
 .idea/
+.vscode/
 
 # Ignore all files with an extension (e.g., .log)
 *.log

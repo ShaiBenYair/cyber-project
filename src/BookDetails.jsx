@@ -12,7 +12,7 @@ const BookDetails = () => {
 
   const fetchBookDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/book/${id}`);
+      const response = await axios.get(`/book/${id}`);
       setBook(response.data);
     } catch (err) {
       setError('Failed to load book details');
@@ -30,7 +30,7 @@ const BookDetails = () => {
     if (!newNote.trim()) return;
 
     try {
-      await axios.post(`http://localhost:3000/book/${id}/updates`, { note: newNote });
+      await axios.post(`/book/${id}/updates`, { note: newNote });
       setNewNote('');
       await fetchBookDetails(); // Refresh the book data
     } catch (err) {
